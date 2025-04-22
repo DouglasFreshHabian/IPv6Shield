@@ -46,7 +46,7 @@ Or move it to a system path:
 ```bash
    sudo cp disable-ipv6.sh /usr/local/bin/disable-ipv6
    sudo chmod +x /usr/local/bin/disable-ipv6
-   disableIPv6
+   disable-ipv6
 ```
 
 ## 📋 Menu Options
@@ -72,8 +72,6 @@ To disable IPv6, it applies the following:
 If desired, it creates a systemd unit at:
 ```bash
    /etc/systemd/system/disable-ipv6.service
-
-   /usr/local/sbin/disable-ipv6.sh
 ```
 
 This ensures IPv6 remains disabled on every boot.
@@ -96,7 +94,7 @@ You can safely re-enable IPv6 using the script's menu option (2), which:
 
 ## 📂 Project Structure
 ```bash
-   ipv6.sh        # Main script
+   disable-ipv6.sh        # Main script
    /etc/sysctl.conf        # Updated with IPv6 flags
    /usr/local/sbin/disable-ipv6.sh   # Optional helper script for systemd
    /etc/systemd/system/disable-ipv6.service  # Optional persistent service
@@ -107,10 +105,14 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 
 ## ✍️ Author
 
-Name: Douglas Habian
-GitHub: @DouglasFreshHabian
-Website: https://DouglasFreshHabian/DouglasFreshHabian
-Youtube: https://www.youtube.com/@DouglasHabian-tq5ck
+| Name:             | Description                                       |
+| :---------------- | :------------------------------------------------ |
+| Script:           | disable-ipv6.sh                                   |
+| Author:           | Douglas Habian                                    |
+| Version:          | 1.1                                               |
+| Repo:             | https://github.com/DouglasFreshHabian/IPv6Shield  |
+
+
 
 ## 💬 Feedback & Contributions
 
