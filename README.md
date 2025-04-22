@@ -15,19 +15,13 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 
 ---
 
-## ⚙️ Requirements
-
-- Bash (v4+)
-- `sudo` access or root user
-- `systemd` (optional, for persistent service)
-
-Tested on:
+## ⚙️ Tested On:
 
 - Debian / Ubuntu
 - Arch / Manjaro
 - Fedora
 - Kali / Parrot
-- Most cloud-based VPS setups
+- Most Raspberry Pi's
 
 ---
 
@@ -63,11 +57,15 @@ This script sets sysctl parameters to disable or re-enable IPv6 by modifying /et
 
 To disable IPv6, it applies the following:
 
-```bash
-   net.ipv6.conf.all.disable_ipv6=1
-   net.ipv6.conf.default.disable_ipv6=1
-   net.ipv6.conf.lo.disable_ipv6=1
-```
+## ✅ IPv6 Control
+
+| Setting | Description |
+|--------|-------------|
+| `net.ipv6.conf.all.disable_ipv6=1` | Disables IPv6 for all interfaces. |
+| `net.ipv6.conf.default.disable_ipv6=1` | Disables IPv6 for newly created interfaces. |
+| `net.ipv6.conf.lo.disable_ipv6=1` | Disables IPv6 on the loopback interface (`lo`). |
+
+> Disabling IPv6 reduces attack surface if it's unused on the system. Ideal for internal servers or legacy setups.
 
 If desired, it creates a systemd unit at:
 ```bash
@@ -99,6 +97,82 @@ You can safely re-enable IPv6 using the script's menu option (2), which:
    /usr/local/sbin/disable-ipv6.sh   # Optional helper script for systemd
    /etc/systemd/system/disable-ipv6.service  # Optional persistent service
 ```
+## But Wait... There's More!!!
+We now have an enhanced hardening option available...
+
+# 🔐 Enhanced Hardening Settings: Explained
+#### These additional settings are designed to not only **disable IPv6**,but to **harden networking behavior**, and **tune TCP parameters** to defend against spoofing, scanning, and various attacks.
+---
+
+## 🔍 IP Spoofing Protection
+
+| Setting | Description |
+|--------|-------------|
+| `net.ipv4.conf.all.rp_filter=1` | Enables reverse path filtering on all interfaces (helps prevent spoofing). |
+| `net.ipv4.conf.default.rp_filter=1` | Enables reverse path filtering by default for new interfaces. |
+
+> Helps block spoofed IP packets by validating source IP against routing table. Crucial for routers and multi-homed systems.
+
+---
+
+## 🚫 Disable Source Routing
+
+| Setting | Description |
+|--------|-------------|
+| `net.ipv4.conf.all.accept_source_route=0` | Disables IP source routing (packet sender defines route). |
+| `net.ipv4.conf.default.accept_source_route=0` | Disables it by default on all new interfaces. |
+
+> Source routing is rarely used today and can be exploited for network mapping or bypassing controls.
+
+---
+
+## ↩️ Disable ICMP Redirects
+
+| Setting | Description |
+|--------|-------------|
+| `net.ipv4.conf.all.accept_redirects=0` | Prevents system from accepting ICMP redirects. |
+| `net.ipv4.conf.default.accept_redirects=0` | Applies same setting to default interface behavior. |
+
+> Attackers can exploit redirects to reroute traffic or spoof gateways. These should be off for security.
+
+---
+
+## 🧠 TCP Protections
+
+| Setting | Description |
+|--------|-------------|
+| `net.ipv4.tcp_syncookies=1` | Enables TCP SYN cookies to defend against SYN flood (DoS) attacks. |
+| `net.ipv4.tcp_fin_timeout=15` | Reduces FIN timeout (default is 60 seconds) to free memory quicker. |
+| `net.ipv4.tcp_keepalive_time=300` | Sets time (in seconds) before TCP sends keepalive probes. |
+| `net.ipv4.tcp_retries1=5` | Sets retry limit for initial TCP SYN packets. |
+| `net.ipv4.tcp_retries2=15` | Limits retries before dropping unresponsive connections. |
+
+> These values fine-tune TCP behavior for resilience against slow-scan attacks, half-open connections, or misbehaving clients.
+
+---
+
+## 🚀 Kernel Buffer Tuning
+
+| Setting | Description |
+|--------|-------------|
+| `net.core.rmem_max=16777216` | Increases max kernel receive buffer size (default is often 212992). |
+| `net.core.wmem_max=16777216` | Increases max kernel send buffer size. |
+
+> Useful for high-bandwidth or latency-sensitive applications. Prevents buffer overflow or bottlenecking under load.
+
+---
+
+## 📌 When to Use These Settings
+
+These are especially useful for:
+
+- Servers exposed to the internet  
+- Systems with sensitive data  
+- Performance-critical applications (e.g. gaming, VoIP, media)  
+- Privacy-hardened setups
+
+---
+
 ## ✅ License
 
 MIT License — use it freely in personal or commercial projects. Attribution appreciated but not required.
