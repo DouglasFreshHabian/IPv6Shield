@@ -1,3 +1,15 @@
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Maintained](https://img.shields.io/badge/Maintained-Yes-brightgreen.svg)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+![Shell Script](https://img.shields.io/badge/made%20with-bash-1f425f.svg)
+![Status](https://img.shields.io/badge/status-stable-success.svg)
+![Issues](https://img.shields.io/github/issues/DouglasFreshHabian/IPv6Shield)
+![Stars](https://img.shields.io/github/stars/DouglasFreshHabian/IPv6Shield?style=social)
+![IPv6](https://img.shields.io/badge/IPv6-Support%20Control-red.svg)
+![Sysctl](https://img.shields.io/badge/Sysctl-Hardening-yellow.svg)
+![Systemd](https://img.shields.io/badge/systemd-Compatible-blue.svg)
+![Status: Stable](https://img.shields.io/badge/Status-Stable-brightgreen.svg)
+
 # 🛡🗡  IPv6Shield™️ 
 
 A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux systems, with optional systemd integration and sysctl-based hardening. Designed for servers, workstations, and privacy-focused setups.
@@ -16,6 +28,13 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 ---
 
 ## 🧪 Tested On
+
+![Debian](https://img.shields.io/badge/Tested-Debian%2FUbuntu-lightgrey.svg)
+![Arch](https://img.shields.io/badge/Tested-Arch%2FManjaro-blue.svg)
+![Fedora](https://img.shields.io/badge/Tested-Fedora%2FRedHat-lightblue.svg)
+![Kali Linux](https://img.shields.io/badge/Tested-Kali%20Linux-557C94?logo=kalilinux&logoColor=white)
+![Parrot OS](https://img.shields.io/badge/Tested-Parrot%20OS-1BD96A?logo=parrot-security&logoColor=white)
+![Raspberry Pi](https://img.shields.io/badge/Tested-Raspberry%20Pi-green.svg)
 
 - Debian / Ubuntu
 - Arch / Manjaro
@@ -74,7 +93,7 @@ You can safely re-enable IPv6 using the script's menu option (2), which:
 
 ◽ Reverts sysctl settings to 0
 
-◾ Removes the systemd unit and IPv6 script
+◾ Removes the systemd unit and IPv6 script (if it exists)
 
 ◽ Reloads systemd and sysctl
 
@@ -165,27 +184,27 @@ These are especially useful for:
 
 ---
  
-## Option 4: Create systemd Service
+## Option 4: Create systemd Service (Auto-Harden on Boot)
 
-* This option creates a systemd service that will automatically apply the hardening settings, including disabling IPv6 and all additional sysctl settings, every time the system boots up.
+* This option creates a `systemd` service that will **automatically apply the hardening settings**, including disabling IPv6 and all additional sysctl settings, **every time the system boots up**.
 
-* It's more about setting up a persistent, automated mechanism that will apply the hardening settings each time the system starts.
+* It’s intended for **automated, persistent protection**.
 
-* After running this option, you'll have a service running at boot that applies all your settings, including disabling IPv6.
+* Once created, the service runs on every reboot and ensures the settings are reapplied, even if they are reset by other services or kernel updates.
 
 ## Option 6: Harden System (Apply settings immediately)
 
-* This option immediately applies the hardening settings (like disabling IPv6, setting sysctl rules, etc.) to the current system session.
+* This option **immediately applies** all IPv6 disabling and hardening sysctl settings **to the current system session**.
 
-* It doesn't create a systemd service or make the settings persistent at boot. It only affects the system while it's running, so if the system reboots, you'll need to apply it again unless you use a systemd service or modify /etc/sysctl.conf.
+* It **does** update /etc/sysctl.conf, making most changes persist after reboot.
 
-* It's essentially a one-time application of the settings, but it doesn't survive after a reboot unless further configured (like in Option 4).
+* However, if the system resets settings at boot, this option **alone** may not guarantee they remain active — **use Option 4 for persistence via systemd**.
 
 ## Key Differences Between Option 4 (Create systemd service) and Option 6 (Harden System):
-| Option                          | Purpose                                                       | Immediate Effect                     | Persistence After Reboot            |
-|---------------------------------|----------------------------------------------------------------|--------------------------------------|-------------------------------------|
-| **4. Create systemd service**   | Sets up a service to apply hardening settings at every boot   | ❌ No – just sets up the service     | ✅ Yes – runs automatically at boot |
-| **6. Harden System**            | Applies all hardening settings immediately to the system      | ✅ Yes – applies settings right now  | ❌ No – not persistent after reboot |
+| Option                          | Purpose                                         | Immediate Effect                     | Persistence After Reboot            |
+|---------------------------------|-------------------------------------------------|--------------------------------------|-------------------------------------|
+| **4. Create systemd service**   | Automates hardening at every boot               | ❌ No – just sets up the service     | ✅ Yes – runs automatically at boot |
+| **6. Harden System (Now)**      | Applies settings now, updates /etc/sysctl.conf  | ✅ Yes – immediate changes           | ⚠️ Mostly yes, but may vary         |
 
 
 ## 📝 License
