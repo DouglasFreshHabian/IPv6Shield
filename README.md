@@ -4,7 +4,7 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 
 ---
 
-## ✨ Features
+## ✴️ Features
 
 - ✅ Disable or re-enable IPv6 with one command
 - ☑️ Automatically updates `/etc/sysctl.conf`
@@ -15,7 +15,7 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 
 ---
 
-## ⚙️ Tested On:
+## 🌍 Tested On
 
 - Debian / Ubuntu
 - Arch / Manjaro
@@ -58,7 +58,7 @@ This script sets sysctl parameters to disable or re-enable IPv6 by modifying /et
 
 To disable IPv6, it applies the following:
 
-## ✅ IPv6 Control
+## ✔️ IPv6 Control
 
 | Setting | Description |
 |--------|-------------|
