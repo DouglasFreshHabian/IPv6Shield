@@ -80,7 +80,9 @@ This ensures IPv6 remains disabled on every boot.
 You can safely re-enable IPv6 using the script's menu option (2), which:
 
 ◽ Reverts sysctl settings to 0
+
 ◾ Removes the systemd unit and IPv6 script
+
 ◽ Reloads systemd and sysctl
 
 ## 🚨 Warnings & Notes 
@@ -99,13 +101,14 @@ You can safely re-enable IPv6 using the script's menu option (2), which:
    /etc/systemd/system/disable-ipv6.service  # Optional persistent service
 ```
 ## But Wait... 😲 There's More!!!
-We now have an enhanced hardening option available...
 
-# 💻🌐 Enhanced Hardening Settings: Explained
-#### These additional settings are designed to not only **disable IPv6**,but to **harden networking behavior**, and **tune TCP parameters** to defend against spoofing, scanning, and various attacks.
+> We now have an enhanced hardening option available...
+
+## 💻🌐 Enhanced Hardening Settings: Explained
+
+These additional settings are designed to not only **disable IPv6**,but to **harden networking behavior**, and **tune TCP parameters** to defend against spoofing, scanning, and various attacks.
+
 ---
-
-> 🔨 6) Harden System (Ehanced)
 
 ## 🔍 IP Spoofing Protection
 
