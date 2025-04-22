@@ -15,7 +15,7 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 
 ---
 
-## 🌍 Tested On
+## 🧪 Tested On
 
 - Debian / Ubuntu
 - Arch / Manjaro
