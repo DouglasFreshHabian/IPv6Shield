@@ -176,7 +176,7 @@ These are especially useful for:
 
 ---
 
-## ✅ License
+## 📝 License
 
 MIT License — use it freely in personal or commercial projects. Attribution appreciated but not required.
 
