@@ -32,15 +32,15 @@ Clone the repo and run the script:
 ```bash
    git clone https://github.com/DouglasFreshHabian/IPv6Shield.git
    cd IPv6Shield
-   chmod +x ./disable-ipv6.sh
-   sudo ./disable-ipv6.sh
+   chmod +x ./ipv6shield.sh
+   sudo ./ipv6shield.sh
 ```
 Or move it to a system path:
 
 ```bash
-   sudo cp disable-ipv6.sh /usr/local/bin/disable-ipv6
-   sudo chmod +x /usr/local/bin/disable-ipv6
-   disable-ipv6
+   sudo cp ipv6shield.sh /usr/local/bin/ipv6shield
+   sudo chmod +x /usr/local/bin/ipv6shield
+   ipv6shield
 ```
 
 ## 📋 Menu Options
@@ -50,7 +50,7 @@ Or move it to a system path:
 3) Check IPv6 Status
 4) Create systemd service
 5) Check for systemd Support
-6) Harden System (Ehanced)
+6) Harden System (Now)
 7) Exit
 
 ## 🧠 What This Script Does
@@ -67,13 +67,6 @@ To disable IPv6, it applies the following:
 | `net.ipv6.conf.lo.disable_ipv6=1` | Disables IPv6 on the loopback interface (`lo`). |
 
 > Disabling IPv6 reduces attack surface if it's unused on the system. Ideal for internal servers or legacy setups.
-
-If desired, it creates a systemd unit at:
-```bash
-   /etc/systemd/system/disable-ipv6.service
-```
-
-This ensures IPv6 remains disabled on every boot.
 
 ## 🕘 Reversing Changes 
 
@@ -93,13 +86,6 @@ You can safely re-enable IPv6 using the script's menu option (2), which:
 
 🔹A reboot may be required for full effect on some distros.
 
-## 🗃 Project Structure  
-```bash
-   disable-ipv6.sh        # Main script
-   /etc/sysctl.conf        # Updated with IPv6 flags
-   /usr/local/sbin/disable-ipv6.sh   # Optional helper script for systemd
-   /etc/systemd/system/disable-ipv6.service  # Optional persistent service
-```
 ## But Wait... 😲 There's More!!!
 
 > We now have an enhanced hardening option available...
@@ -178,6 +164,29 @@ These are especially useful for:
 - Privacy-hardened setups
 
 ---
+ 
+## Option 4: Create systemd Service
+
+* This option creates a systemd service that will automatically apply the hardening settings, including disabling IPv6 and all additional sysctl settings, every time the system boots up.
+
+* It's more about setting up a persistent, automated mechanism that will apply the hardening settings each time the system starts.
+
+* After running this option, you'll have a service running at boot that applies all your settings, including disabling IPv6.
+
+## Option 6: Harden System (Apply settings immediately)
+
+* This option immediately applies the hardening settings (like disabling IPv6, setting sysctl rules, etc.) to the current system session.
+
+* It doesn't create a systemd service or make the settings persistent at boot. It only affects the system while it's running, so if the system reboots, you'll need to apply it again unless you use a systemd service or modify /etc/sysctl.conf.
+
+* It's essentially a one-time application of the settings, but it doesn't survive after a reboot unless further configured (like in Option 4).
+
+## Key Differences Between Option 4 (Create systemd service) and Option 6 (Harden System):
+| Option                          | Purpose                                                       | Immediate Effect                     | Persistence After Reboot            |
+|---------------------------------|----------------------------------------------------------------|--------------------------------------|-------------------------------------|
+| **4. Create systemd service**   | Sets up a service to apply hardening settings at every boot   | ❌ No – just sets up the service     | ✅ Yes – runs automatically at boot |
+| **6. Harden System**            | Applies all hardening settings immediately to the system      | ✅ Yes – applies settings right now  | ❌ No – not persistent after reboot |
+
 
 ## 📝 License
 
