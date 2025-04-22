@@ -1,6 +1,5 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Maintained](https://img.shields.io/badge/Maintained-Yes-brightgreen.svg)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![Shell Script](https://img.shields.io/badge/made%20with-bash-1f425f.svg)
 ![Status](https://img.shields.io/badge/status-stable-success.svg)
 ![Issues](https://img.shields.io/github/issues/DouglasFreshHabian/IPv6Shield)
@@ -8,22 +7,10 @@
 ![IPv6](https://img.shields.io/badge/IPv6-Support%20Control-red.svg)
 ![Sysctl](https://img.shields.io/badge/Sysctl-Hardening-yellow.svg)
 ![Systemd](https://img.shields.io/badge/systemd-Compatible-blue.svg)
-![Status: Stable](https://img.shields.io/badge/Status-Stable-brightgreen.svg)
 
 # 🛡🗡  IPv6Shield™️ 
-
+![harden-system-service png](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/Assets/harden-system.png)
 A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux systems, with optional systemd integration and sysctl-based hardening. Designed for servers, workstations, and privacy-focused setups.
-
----
-
-## ✴️ Features
-
-- ✅ Disable or re-enable IPv6 with one command
-- ☑️ Automatically updates `/etc/sysctl.conf`
-- ✅ Creates and manages a persistent `systemd` service
-- ☑️ Colorful, interactive menu for easy use
-- ✅ Includes backup and safety checks
-- ☑️ Compatible with modern Linux distros
 
 ---
 
@@ -43,7 +30,16 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 - Most Raspberry Pi's
 
 ---
+## ✴️ Features
 
+- ✅ Disable or re-enable IPv6 with one command
+- ☑️ Automatically updates `/etc/sysctl.conf`
+- ✅ Creates and manages a persistent `systemd` service
+- ☑️ Colorful, interactive menu for easy use
+- ✅ Includes backup and safety checks
+- ☑️ Compatible with modern Linux distros
+
+---
 ## 🛠 Installation
 
 Clone the repo and run the script:
@@ -219,6 +215,8 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 | Author:           | Douglas Habian                                    |
 | Version:          | 1.1                                               |
 | Repo:             | https://github.com/DouglasFreshHabian/IPv6Shield  |
+
+
 
 ## 💬 Feedback & Contributions
 
