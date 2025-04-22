@@ -1,4 +1,4 @@
-# 🔒 IPv6Shield
+# 🛡🗡  IPv6Shield™️ 
 
 A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux systems, with optional systemd integration and sysctl-based hardening. Designed for servers, workstations, and privacy-focused setups.
 
@@ -7,11 +7,11 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 ## ✨ Features
 
 - ✅ Disable or re-enable IPv6 with one command
-- ✅ Automatically updates `/etc/sysctl.conf`
+- ☑️ Automatically updates `/etc/sysctl.conf`
 - ✅ Creates and manages a persistent `systemd` service
-- ✅ Colorful, interactive menu for easy use
+- ☑️ Colorful, interactive menu for easy use
 - ✅ Includes backup and safety checks
-- ✅ Compatible with modern Linux distros
+- ☑️ Compatible with modern Linux distros
 
 ---
 
@@ -50,7 +50,8 @@ Or move it to a system path:
 3) Check IPv6 Status
 4) Create systemd service
 5) Check for systemd Support
-6) Exit
+6) Harden System (Ehanced)
+7) Exit
 
 ## 🧠 What This Script Does
 This script sets sysctl parameters to disable or re-enable IPv6 by modifying /etc/sysctl.conf and applying changes using sysctl -p.
@@ -74,35 +75,37 @@ If desired, it creates a systemd unit at:
 
 This ensures IPv6 remains disabled on every boot.
 
-## 🔄 Reversing Changes
+## 🕘 Reversing Changes 
 
 You can safely re-enable IPv6 using the script's menu option (2), which:
 
-1. Reverts sysctl settings to 0
-2. Removes the systemd unit and IPv6 script
-3. Reloads systemd and sysctl
+◽ Reverts sysctl settings to 0
+◾ Removes the systemd unit and IPv6 script
+◽ Reloads systemd and sysctl
 
-## 🚨 Warnings & Notes
+## 🚨 Warnings & Notes 
 
-* Always backup your system or test in a VM before applying network stack changes.
+🔹Always backup your system or test in a VM before applying network stack changes.
 
-* Some VPNs, DNS resolvers, and applications may expect IPv6. Test carefully.
+🔸Some VPNs, DNS resolvers, and applications may expect IPv6. Test carefully.
 
-* A reboot may be required for full effect on some distros.
+🔹A reboot may be required for full effect on some distros.
 
-## 📂 Project Structure
+## 🗃 Project Structure  
 ```bash
    disable-ipv6.sh        # Main script
    /etc/sysctl.conf        # Updated with IPv6 flags
    /usr/local/sbin/disable-ipv6.sh   # Optional helper script for systemd
    /etc/systemd/system/disable-ipv6.service  # Optional persistent service
 ```
-## But Wait... There's More!!!
+## But Wait... 😲 There's More!!!
 We now have an enhanced hardening option available...
 
-# 🔐 Enhanced Hardening Settings: Explained
+# 💻🌐 Enhanced Hardening Settings: Explained
 #### These additional settings are designed to not only **disable IPv6**,but to **harden networking behavior**, and **tune TCP parameters** to defend against spoofing, scanning, and various attacks.
 ---
+
+> 🔨 6) Harden System (Ehanced)
 
 ## 🔍 IP Spoofing Protection
 
@@ -185,8 +188,6 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 | Author:           | Douglas Habian                                    |
 | Version:          | 1.1                                               |
 | Repo:             | https://github.com/DouglasFreshHabian/IPv6Shield  |
-
-
 
 ## 💬 Feedback & Contributions
 
