@@ -70,7 +70,8 @@ We maintain versioned releases under the "Releases" section of the repository. I
 4) Create systemd service
 5) Check for systemd Support
 6) Harden System (Now)
-7) Exit
+7) Clean up old backup files
+8) Exit
 
 ## 🧠 What This Script Does
 This script sets sysctl parameters to disable or re-enable IPv6 by modifying /etc/sysctl.conf and applying changes using sysctl -p.
