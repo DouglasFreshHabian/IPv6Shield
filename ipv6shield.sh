@@ -13,9 +13,6 @@ RESET='\033[0m'
 # Colors for sysctl output cycling
 COLORS=($RED $GREEN $YELLOW $BLUE $CYAN $PURPLE)
 
-#------------- Version -------------#
-VERSION="1.2"
-
 #------------- ASCII Banner -------------#
 ascii_banner() {
     echo -e "${WHITE}"
@@ -42,14 +39,12 @@ ascii_banner() {
     |   |  /   /   ()  ))   ))   .( ( ( ) ). ( !!  )( !! ) ((   ))  ..
     |   |_<   /   ( ) ( (  ) )   (( )  )).) ((/ |  (  | \(  )) ((. ).
 ____<_____\\__\__(___)_))_((_(____))__(_(___.oooO_____Oooo.(_(_)_)((_
-	 _           __    _    _     _    _      _   
-	(_)_ ____ __/ / __| |_ (_)___| |__| |  __| |_  
-	| | '_ \ V / _ (_-< ' \| / -_) / _` |_(_-< ' \ 
-	|_| .__/\_/\___/__/_||_|_\___|_\__,_(_)__/_||_|
-	  |_| 
-                         Version:1.2
+	    _ _          _    _       ___ _____   ____ 
+	 __| (_)___ __ _| |__| |___  |_ _| _ \ \ / / / 
+	/ _` | (_-</ _` | '_ \ / -_)  | ||  _/\ V / _ \
+	\__,_|_/__/\__,_|_.__/_\___| |___|_|   \_/\___/
 	                                               
-
+                         Version: 1.3
 EOF
     echo -e "${RESET}"
 }
@@ -146,7 +141,7 @@ check_ipv6_status() {
     for intf in all default lo; do
         echo -e "${WHITE}$intf:${RESET} "
         cat /proc/sys/net/ipv6/conf/${intf}/disable_ipv6
-        echo -e "${GREEN}✅  Done checking status...${RESET}"
+        echo -e "${GREEN}✅  0 = Enabled / 1 = Disabled${RESET}"
 
     done
 }
@@ -373,7 +368,36 @@ harden_system() {
     echo -e "${YELLOW}Reboot is recommended to ensure all settings take full effect.${RESET}"
 }
 
-# Main menu with added cleanup option
+#------------- Remove systemd Service -------------#
+remove_systemd_service() {
+    echo
+    echo -e "${CYAN}Removing systemd service...${RESET}"
+
+    [[ $EUID -ne 0 ]] && { echo -e "${RED}Please run as root using sudo.${RESET}"; return; }
+
+    SERVICE_PATH="/etc/systemd/system/harden-system.service"
+    SCRIPT_PATH="/usr/local/sbin/harden-system.sh"
+
+    if [[ ! -f "$SERVICE_PATH" ]]; then
+        echo -e "${RED}❌  The systemd service does not exist. Nothing to remove.${RESET}"
+        return
+    fi
+
+    # Stop and disable the service before removal
+    systemctl stop harden-system.service
+    systemctl disable harden-system.service
+
+    # Remove the service file and the script
+    rm -f "$SERVICE_PATH" "$SCRIPT_PATH"
+
+    # Reload systemd to reflect the changes
+    systemctl daemon-reexec
+    systemctl daemon-reload
+
+    echo -e "${GREEN}✅  Systemd service and associated script have been removed successfully.${RESET}"
+}
+
+#------------- Main menu with Undo option -------------#
 main_menu() {
     while true; do
         clear
@@ -384,6 +408,7 @@ main_menu() {
             "Re-enable IPv6"
             "Check IPv6 Status"
             "Create systemd service"
+            "Remove systemd service"        # Added option to remove systemd service
             "Check for systemd Support"
             "Harden System"
             "Clean up old backup files"
@@ -409,18 +434,22 @@ main_menu() {
                     break
                     ;;
                 5)
-                    check_systemd
+                    remove_systemd_service   # Call the new remove function here
                     break
                     ;;
                 6)
-                    harden_system
+                    check_systemd
                     break
                     ;;
                 7)
-                    cleanup_backups
+                    harden_system
                     break
                     ;;
                 8)
+                    cleanup_backups
+                    break
+                    ;;
+                9)
                     echo -e "${WHITE}Exiting.${RESET}"
                     exit 0
                     ;;
