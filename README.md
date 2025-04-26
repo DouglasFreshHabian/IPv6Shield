@@ -219,18 +219,21 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 | Version:          | 1.2                                               |
 | Repo:             | https://github.com/DouglasFreshHabian/IPv6Shield  |
 
-
 ## 💬 Feedback & Contributions
+
 Got ideas, bug reports, or improvements?  
-Feel free to open an issue, submit a pull request, or fork the repo and contribute!
+Feel free to **open an issue**, **submit a pull request**, or **fork the repo** and contribute!
 
-👍 [How to contribute](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CONTRIBUTING.md) - Please refer to the guidelines for contributing.
+- 👍 [How to Contribute](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CONTRIBUTING.md) — Please review the contribution guidelines.
+- 🤝 [View Code of Conduct](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CODE_OF_CONDUCT.md) — A respectful community is key!
+- 🔐 [Security Policy](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/SECURITY.md) — Found a vulnerability? Here's how to report it.
 
-👉 [View Code of Conduct](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CODE_OF_CONDUCT.md) - Please review the code of conduct
+---
 
-### If you have not done so already, please head over to the channel and hit that subscribe button to show some support. Thank you!!!
+### 📺 If you haven’t already, head over to the channel and hit that **Subscribe** button to show some support. Thank you!
 
-## 👍 [Stay Fresh](https://www.youtube.com/@DouglasHabian-tq5ck) 
+## 👍 [Stay Fresh](https://www.youtube.com/@DouglasHabian-tq5ck)
+
 
 <!-- Reach out to me if you are interested in collaboration or want to contract with me for any of the following:
 	Building Github Pages
