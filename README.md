@@ -227,7 +227,14 @@ Feel free to **open an issue**, **submit a pull request**, or **fork the repo** 
 - 👍 [How to Contribute](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CONTRIBUTING.md) — Please review the contribution guidelines.
 - 🤝 [View Code of Conduct](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CODE_OF_CONDUCT.md) — A respectful community is key!
 - 🔐 [Security Policy](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/SECURITY.md) — Found a vulnerability? Here's how to report it.
+---
+## 🗒 Issue Templates
 
+For more structured feedback, please use the appropriate templates when opening an issue:
+
+- 🐛 [Bug Report](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/.github/ISSUE_TEMPLATE/bug_report.md) — Report bugs or unexpected behavior.
+- 💡 [Feature Request](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/.github/ISSUE_TEMPLATE/feature_request.md) — Suggest new features or improvements.
+- 🆘 [Support Request](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/.github/ISSUE_TEMPLATE/support_request.md) — Ask for help or guidance.
 ---
 
 ### 📺 If you haven’t already, head over to the channel and hit that **Subscribe** button to show some support. Thank you!
