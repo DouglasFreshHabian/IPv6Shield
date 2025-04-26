@@ -42,6 +42,7 @@ A simple yet powerful bash script for **disabling or re-enabling IPv6** on Linux
 ---
 ## 🛠 Installation
 
+
 Clone the repo and run the script:
 
 ```bash
@@ -57,6 +58,9 @@ Or move it to a system path:
    sudo chmod +x /usr/local/bin/ipv6shield
    ipv6shield
 ```
+## 📅 Versioning & Releases
+We maintain versioned releases under the "Releases" section of the repository. If you want a specific version, check out the [releases page](https://github.com/DouglasFreshHabian/IPv6Shield/releases) to download and use it directly.
+
 
 ## 📋 Menu Options
 
@@ -106,8 +110,7 @@ You can safely re-enable IPv6 using the script's menu option (2), which:
 > We now have an enhanced hardening option available...
 
 ## 💻🌐 Enhanced Hardening Settings: Explained
-
-These additional settings are designed to not only **disable IPv6**,but to **harden networking behavior**, and **tune TCP parameters** to defend against spoofing, scanning, and various attacks.
+> These settings not only disable IPv6 but also apply additional **network hardening** and **TCP optimizations** to prevent attacks like spoofing, denial of service (DoS), and improve overall security.
 
 ---
 
