@@ -224,9 +224,9 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 Got ideas, bug reports, or improvements?  
 Feel free to open an issue, submit a pull request, or fork the repo and contribute!
 
-[How to contribute](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CONTRIBUTING.md) - Please refer to the guidelines for contributing.
+👍 [How to contribute](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CONTRIBUTING.md) - Please refer to the guidelines for contributing.
 
-👉 [View Code of Conduct](./CODE_OF_CONDUCT.md)
+👉 [View Code of Conduct](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CODE_OF_CONDUCT.md) - Please review the code of conduct
 
 ### If you have not done so already, please head over to the channel and hit that subscribe button to show some support. Thank you!!!
 
