@@ -184,7 +184,7 @@ These are especially useful for:
 
 ---
  
-## Option 4: Create systemd Service (Auto-Harden on Boot)
+## 🚩 Option 4: Create systemd Service (Auto-Harden on Boot)
 
 * This option creates a `systemd` service that will **automatically apply the hardening settings**, including disabling IPv6 and all additional sysctl settings, **every time the system boots up**.
 
@@ -192,7 +192,7 @@ These are especially useful for:
 
 * Once created, the service runs on every reboot and ensures the settings are reapplied, even if they are reset by other services or kernel updates.
 
-## Option 6: Harden System (Apply settings immediately)
+## 🥊 Option 6: Harden System (Apply settings immediately)
 
 * This option **immediately applies** all IPv6 disabling and hardening sysctl settings **to the current system session**.
 
