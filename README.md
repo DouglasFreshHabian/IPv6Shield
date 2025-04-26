@@ -68,10 +68,11 @@ We maintain versioned releases under the "Releases" section of the repository. I
 2) Re-enable IPv6
 3) Check IPv6 Status
 4) Create systemd service
-5) Check for systemd Support
-6) Harden System (Now)
-7) Clean up old backup files
-8) Exit
+5) Remove systemd service
+6) Check for systemd Support
+7) Harden System (Now)
+8) Clean up old backup files
+9) Exit
 
 ## 🧠 What This Script Does
 This script sets sysctl parameters to disable or re-enable IPv6 by modifying /etc/sysctl.conf and applying changes using sysctl -p.
@@ -192,7 +193,18 @@ These are especially useful for:
 
 * Once created, the service runs on every reboot and ensures the settings are reapplied, even if they are reset by other services or kernel updates.
 
-## 🥊 Option 6: Harden System (Apply settings immediately)
+## 🧹 Option 5: Remove systemd Service
+
+* This option **removes the systemd service** created by **Option 4** that applies the hardening settings at boot.
+
+* It **stops** the service, **disables** it from starting on boot, and **deletes** both the service file and the script used for hardening.
+
+* After removal, the hardening settings will no longer be applied automatically on system startup. If you want to undo the applied settings, you will need to manually remove or reset the sysctl configurations.
+
+* This option is useful if you no longer need the persistent hardening or want to clean up the system.
+
+
+## 🥊 Option 7: Harden System (Apply settings immediately)
 
 * This option **immediately applies** all IPv6 disabling and hardening sysctl settings **to the current system session**.
 
@@ -204,7 +216,7 @@ These are especially useful for:
 | Option                          | Purpose                                         | Immediate Effect                     | Persistence After Reboot            |
 |---------------------------------|-------------------------------------------------|--------------------------------------|-------------------------------------|
 | **4. Create systemd service**   | Automates hardening at every boot               | ❌ No – just sets up the service     | ✅ Yes – runs automatically at boot |
-| **6. Harden System (Now)**      | Applies settings now, updates /etc/sysctl.conf  | ✅ Yes – immediate changes           | ⚠️ Mostly yes, but may vary         |
+| **7. Harden System (Now)**      | Applies settings now, updates /etc/sysctl.conf  | ✅ Yes – immediate changes           | ⚠️ Mostly yes, but may vary         |
 
 
 ## 📝 License
@@ -217,7 +229,7 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 | :---------------- | :------------------------------------------------ |
 | Script:           | ipv6shield.sh                                     |
 | Author:           | Douglas Habian                                    |
-| Version:          | 1.2                                               |
+| Version:          | 1.3                                               |
 | Repo:             | https://github.com/DouglasFreshHabian/IPv6Shield  |
 
 ## 💬 Feedback & Contributions
