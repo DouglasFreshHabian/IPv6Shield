@@ -213,7 +213,7 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 | :---------------- | :------------------------------------------------ |
 | Script:           | ipv6shield.sh                                     |
 | Author:           | Douglas Habian                                    |
-| Version:          | 1.1                                               |
+| Version:          | 1.2                                               |
 | Repo:             | https://github.com/DouglasFreshHabian/IPv6Shield  |
 
 
