@@ -226,6 +226,8 @@ Feel free to open an issue, submit a pull request, or fork the repo and contribu
 
 [How to contribute](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/CONTRIBUTING.md) - Please refer to the guidelines for contributing.
 
+👉 [View Code of Conduct](./CODE_OF_CONDUCT.md)
+
 ### If you have not done so already, please head over to the channel and hit that subscribe button to show some support. Thank you!!!
 
 ## 👍 [Stay Fresh](https://www.youtube.com/@DouglasHabian-tq5ck) 
