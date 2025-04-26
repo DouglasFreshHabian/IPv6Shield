@@ -13,6 +13,9 @@ RESET='\033[0m'
 # Colors for sysctl output cycling
 COLORS=($RED $GREEN $YELLOW $BLUE $CYAN $PURPLE)
 
+#------------- Version -------------#
+VERSION="1.2"
+
 #------------- ASCII Banner -------------#
 ascii_banner() {
     echo -e "${WHITE}"
@@ -39,14 +42,28 @@ ascii_banner() {
     |   |  /   /   ()  ))   ))   .( ( ( ) ). ( !!  )( !! ) ((   ))  ..
     |   |_<   /   ( ) ( (  ) )   (( )  )).) ((/ |  (  | \(  )) ((. ).
 ____<_____\\__\__(___)_))_((_(____))__(_(___.oooO_____Oooo.(_(_)_)((_
-	    _ _          _    _       ___ _____   ____ 
-	 __| (_)___ __ _| |__| |___  |_ _| _ \ \ / / / 
-	/ _` | (_-</ _` | '_ \ / -_)  | ||  _/\ V / _ \
-	\__,_|_/__/\__,_|_.__/_\___| |___|_|   \_/\___/
+	 _           __    _    _     _    _      _   
+	(_)_ ____ __/ / __| |_ (_)___| |__| |  __| |_  
+	| | '_ \ V / _ (_-< ' \| / -_) / _` |_(_-< ' \ 
+	|_| .__/\_/\___/__/_||_|_\___|_\__,_(_)__/_||_|
+	  |_| 
+                         Version:1.2
 	                                               
 
 EOF
     echo -e "${RESET}"
+}
+
+#------------- Cleanup Old Backup Files -------------#
+cleanup_backups() {
+    echo -e "${CYAN}Cleaning up old backup files...${RESET}"
+
+    # Define the backup directory (assuming backups are saved in /etc)
+    BACKUP_DIR="/etc"
+    # Find and delete backups older than 30 days (you can change this value)
+    find "$BACKUP_DIR" -name '*.bak.*' -type f -mtime +30 -exec rm -f {} \;
+
+    echo -e "${GREEN}✅ Old backup files cleaned up successfully.${RESET}"
 }
 
 #------------- Check if systemd is present -------------#
@@ -83,12 +100,19 @@ add_sysctl_setting() {
     fi
 }
 
-#------------- Disable IPv6 -------------#
 disable_ipv6() {
     echo
     echo -e "${CYAN}Disabling IPv6 permanently...${RESET}\n"
 
     [[ $EUID -ne 0 ]] && { echo -e "${RED}Please run as root using sudo.${RESET}"; return; }
+
+    # Check if IPv6 is already disabled
+    if [[ $(sysctl -n net.ipv6.conf.all.disable_ipv6) -eq 1 && \
+          $(sysctl -n net.ipv6.conf.default.disable_ipv6) -eq 1 && \
+          $(sysctl -n net.ipv6.conf.lo.disable_ipv6) -eq 1 ]]; then
+        echo -e "${GREEN}✅  IPv6 is already disabled. No changes needed.${RESET}"
+        return
+    fi
 
     BACKUP_FILE="/etc/sysctl.conf.bak.$(date +%s)"
     cp /etc/sysctl.conf "$BACKUP_FILE"
@@ -101,7 +125,7 @@ disable_ipv6() {
     sysctl -w net.ipv6.conf.all.disable_ipv6=1
     sysctl -w net.ipv6.conf.default.disable_ipv6=1
     sysctl -w net.ipv6.conf.lo.disable_ipv6=1
-   
+
     echo
     echo -e "${WHITE}Reloading sysctl...${RESET}\n"
 
@@ -126,6 +150,34 @@ check_ipv6_status() {
 
     done
 }
+
+#------------- Check and Handle Existing systemd Service -------------#
+
+# Before creating a new systemd service, let’s check if the service file already exists. 
+check_and_create_systemd_service() {
+    echo -e "${CYAN}Checking if systemd service already exists...${RESET}"
+
+    SERVICE_PATH="/etc/systemd/system/harden-system.service"
+    SCRIPT_PATH="/usr/local/sbin/harden-system.sh"
+
+    if [[ -f "$SERVICE_PATH" ]]; then
+        echo -e "${YELLOW}⚠️  The systemd service already exists at: ${SERVICE_PATH}${RESET}"
+        read -p "Do you want to overwrite it? (y/n): " overwrite_choice
+        if [[ "$overwrite_choice" =~ ^[Yy]$ ]]; then
+            echo -e "${YELLOW}Overwriting existing systemd service...${RESET}"
+            systemctl stop harden-system.service
+            systemctl disable harden-system.service
+            rm -f "$SERVICE_PATH" "$SCRIPT_PATH"
+        else
+            echo -e "${RED}❌  Skipping systemd service creation. Exiting.${RESET}"
+            return
+        fi
+    fi
+
+    # Proceed with creating the systemd service if not skipping
+    create_systemd_service
+}
+
 
 #------------- Create systemd Service -------------#
 create_systemd_service() {
@@ -261,10 +313,20 @@ harden_system() {
     [[ $EUID -ne 0 ]] && { echo -e "${RED}Please run as root using sudo.${RESET}"; return; }
 
     # Step 1: Disable IPv6 using existing function
-    disable_ipv6
+    # Check if IPv6 is already disabled before proceeding
+    if [[ $(sysctl -n net.ipv6.conf.all.disable_ipv6) -eq 1 && \
+          $(sysctl -n net.ipv6.conf.default.disable_ipv6) -eq 1 && \
+          $(sysctl -n net.ipv6.conf.lo.disable_ipv6) -eq 1 ]]; then
+        echo -e "${GREEN}✅  IPv6 is already disabled. Skipping this step...${RESET}"
+    else
+        disable_ipv6  # If not already disabled, call disable_ipv6
+    fi
 
     # Step 2: Apply additional hardening settings
     echo -e "\n${WHITE}Applying additional sysctl settings...${RESET}"
+
+    # Check if the system is already hardened by checking key sysctl settings
+    local is_hardened=true
     declare -A sysctl_settings=(
         ["net.ipv4.conf.all.rp_filter"]=1
         ["net.ipv4.conf.default.rp_filter"]=1
@@ -282,25 +344,36 @@ harden_system() {
     )
 
     for key in "${!sysctl_settings[@]}"; do
-        add_sysctl_setting "$key" "${sysctl_settings[$key]}"
-        sysctl -w "$key=${sysctl_settings[$key]}" > /dev/null
+        current_value=$(sysctl -n "$key")
+        if [[ "$current_value" -eq "${sysctl_settings[$key]}" ]]; then
+            echo -e "${GREEN}$key is already set to ${sysctl_settings[$key]}. Skipping...${RESET}"
+        else
+            is_hardened=false
+            add_sysctl_setting "$key" "${sysctl_settings[$key]}"
+            sysctl -w "$key=${sysctl_settings[$key]}" > /dev/null
+        fi
     done
+
+    if $is_hardened; then
+        echo -e "${GREEN}✅  System is already hardened. No changes needed.${RESET}"
+        return
+    fi
 
     echo -e "\n${WHITE}Reloading sysctl...${RESET}\n"
 
-    index=0
-    sysctl -p /etc/sysctl.conf | while IFS= read -r line; do
-        [[ $((index % 5)) -eq 0 ]] && color=${COLORS[$(( (index / 5) % ${#COLORS[@]} ))]}
-        echo -e "${color}$line${RESET}"
-        ((index++))
+    # Reload sysctl
+    sysctl -p > /dev/null
+
+    # Print the current settings only for important sysctl changes
+    for key in "${!sysctl_settings[@]}"; do
+        echo -e "${WHITE}$key${RESET}: ${sysctl_settings[$key]}"
     done
 
     echo -e "\n${GREEN}✅ System hardening applied successfully.${RESET}"
     echo -e "${YELLOW}Reboot is recommended to ensure all settings take full effect.${RESET}"
 }
 
-#------------- Menu Interface -------------#
-
+# Main menu with added cleanup option
 main_menu() {
     while true; do
         clear
@@ -312,11 +385,11 @@ main_menu() {
             "Check IPv6 Status"
             "Create systemd service"
             "Check for systemd Support"
-	    "Harden System"
+            "Harden System"
+            "Clean up old backup files"
             "Exit"
         )
 
-        echo -e "${RESET}"
         select opt in "${options[@]}"; do
             case $REPLY in
                 1)
@@ -332,18 +405,22 @@ main_menu() {
                     break
                     ;;
                 4)
-                    create_systemd_service
+                    check_and_create_systemd_service
                     break
                     ;;
                 5)
                     check_systemd
                     break
                     ;;
-		6)
-		    harden_system
-		    break
-		    ;;
+                6)
+                    harden_system
+                    break
+                    ;;
                 7)
+                    cleanup_backups
+                    break
+                    ;;
+                8)
                     echo -e "${WHITE}Exiting.${RESET}"
                     exit 0
                     ;;
