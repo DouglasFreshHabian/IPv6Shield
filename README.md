@@ -200,7 +200,7 @@ These are especially useful for:
 
 * However, if the system resets settings at boot, this option **alone** may not guarantee they remain active — **use Option 4 for persistence via systemd**.
 
-## Key Differences Between Option 4 (Create systemd service) and Option 6 (Harden System):
+## 🔑 Key Differences Between Option 4 (Create systemd service) and Option 6 (Harden System):
 | Option                          | Purpose                                         | Immediate Effect                     | Persistence After Reboot            |
 |---------------------------------|-------------------------------------------------|--------------------------------------|-------------------------------------|
 | **4. Create systemd service**   | Automates hardening at every boot               | ❌ No – just sets up the service     | ✅ Yes – runs automatically at boot |
