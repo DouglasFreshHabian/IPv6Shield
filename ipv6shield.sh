@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# You are using the Beta Version of this script with a new/dfferent menu
+
 #------------- Color Setup -------------#
 REDu='\033[0;31m'
 GREENu='\033[0;32m'
