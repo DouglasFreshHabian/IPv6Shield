@@ -1,17 +1,30 @@
 #!/bin/bash
 
+# You are using the Beta Version of this script with a new/dfferent menu
+
 #------------- Color Setup -------------#
+REDu='\033[0;31m'
+GREENu='\033[0;32m'
+YELLOWu='\033[0;33m'
+BLUEu='\033[0;34m'
+CYANu='\033[0;36m'
+PURPLEu='\033[0;35m'
+WHITEu='\033[0;37m'
+
 RED='\033[1;31m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[1;34m'
 CYAN='\033[1;36m'
-PURPLE='\033[1;35m'
+PURPLE='\033[1;95m'
 WHITE='\033[1;37m'
 RESET='\033[0m'
 
 # Colors for sysctl output cycling
 COLORS=($RED $GREEN $YELLOW $BLUE $CYAN $PURPLE)
+
+# Array of color names
+allcolors=("RED" "GREEN" "YELLOW" "BLUE" "CYAN" "PURPLE" "WHITE")
 
 #------------- ASCII Banner -------------#
 ascii_banner() {
@@ -39,12 +52,35 @@ ascii_banner() {
     |   |  /   /   ()  ))   ))   .( ( ( ) ). ( !!  )( !! ) ((   ))  ..
     |   |_<   /   ( ) ( (  ) )   (( )  )).) ((/ |  (  | \(  )) ((. ).
 ____<_____\\__\__(___)_))_((_(____))__(_(___.oooO_____Oooo.(_(_)_)((_
+EOF
+    echo -e "${RESET}"
+}
+
+# Function to print banner with a random color
+print_banner() {
+
+    # Pick a random color from the allcolors array
+    random_color="${allcolors[$((RANDOM % ${#allcolors[@]}))]}"
+
+    # Convert the color name to the actual escape code
+    case $random_color in
+        "RED") color_code=$RED ;;
+        "GREEN") color_code=$GREEN ;;
+        "YELLOW") color_code=$YELLOW ;;
+        "BLUE") color_code=$BLUE ;;
+        "CYAN") color_code=$CYAN ;;
+        "PURPLE") color_code=$PURPLE ;;
+        "WHITE") color_code=$WHITE ;;
+    esac
+
+    # Print the banner in the chosen color
+    echo -e "${color_code}"
+    cat << "EOF"
 	    _ _          _    _       ___ _____   ____ 
 	 __| (_)___ __ _| |__| |___  |_ _| _ \ \ / / / 
 	/ _` | (_-</ _` | '_ \ / -_)  | ||  _/\ V / _ \
 	\__,_|_/__/\__,_|_.__/_\___| |___|_|   \_/\___/
 	                                               
-                         Version: 1.3
 EOF
     echo -e "${RESET}"
 }
@@ -397,72 +433,83 @@ remove_systemd_service() {
     echo -e "${GREEN}✅  Systemd service and associated script have been removed successfully.${RESET}"
 }
 
-#------------- Main menu with Undo option -------------#
-main_menu() {
-    while true; do
-        clear
-        ascii_banner
-        PS3=$'\nChoose an option: '
-        options=(
-            "Disable IPv6"
-            "Re-enable IPv6"
-            "Check IPv6 Status"
-            "Create systemd service"
-            "Remove systemd service"        # Added option to remove systemd service
-            "Check for systemd Support"
-            "Harden System"
-            "Clean up old backup files"
-            "Exit"
-        )
+#------------- Function to Display Script Info  -------------#
+about() {
+  echo -e "${BLUE}Script Name:${RESET}   ${YELLOW}ipv6shield.sh${RESET}"
+  echo -e "${RED}Version:${RESET}       ${WHITE}1.4${RESET}"
+  echo -e "${PURPLE}Author:${RESET}        ${YELLOW}Douglas Habian${RESET}"
+  echo -e "${GREEN}Repo:${RESET}          ${WHITE}https://github.com/DouglasFreshHabian/IPv6Shield.git${RESET}"
+  exit 0
+}
 
-        select opt in "${options[@]}"; do
-            case $REPLY in
-                1)
-                    disable_ipv6
-                    break
-                    ;;
-                2)
-                    reenable_ipv6
-                    break
-                    ;;
-                3)
-                    check_ipv6_status
-                    break
-                    ;;
-                4)
-                    check_and_create_systemd_service
-                    break
-                    ;;
-                5)
-                    remove_systemd_service   # Call the new remove function here
-                    break
-                    ;;
-                6)
-                    check_systemd
-                    break
-                    ;;
-                7)
-                    harden_system
-                    break
-                    ;;
-                8)
-                    cleanup_backups
-                    break
-                    ;;
-                9)
-                    echo -e "${WHITE}Exiting.${RESET}"
-                    exit 0
-                    ;;
-                *)
-                    echo -e "${RED}❌  Invalid option. Please try again.${RESET}"
-                    break
-                    ;;
-            esac
-        done
+#------------- Help menu with command-line options -------------#
+ascii_banner
+print_banner
 
-        echo -e "\n${WHITE}Press Enter to return to the main menu...${RESET}"
-        read -r
+show_help() {
+    echo -e "${BLUE}Usage:${RESET} ${CYAN}$0 ${RESET}<${REDu}options${RESET}>"
+    echo -e "${BPURPLE}Options:${RESET}"
+    echo -e "${BLUE}  -h, --help                 ${GREEN}Show this help menu."
+    echo -e "${CYAN}  -d, --disable-ipv6         ${PURPLE}Disable IPv6 on the system."
+    echo -e "${WHITE}  -r, --reenable-ipv6        ${YELLOW}Re-enable IPv6 on the system."
+    echo -e "${CYAN}  -s, --check-status         ${PURPLE}Check the current IPv6 status."
+    echo -e "${BLUE}  -C, --create-service       ${GREEN}Create a systemd service to harden the system."
+    echo -e "${CYAN}  -R, --remove-service       ${PURPLE}Remove the systemd service for hardening."
+    echo -e "${WHITE}  -S, --check-systemd        ${YELLOW}Check if systemd is present and active."
+    echo -e "${CYAN}  -H, --harden-system        ${PURPLE}Apply system hardening settings."
+    echo -e "${BLUE}  -b, --cleanup-backups      ${GREEN}Clean up old backup files."
+    echo -e "${CYAN}  -a, --about                ${YELLOW}About Author, Version, etc."
+}
+
+#------------- Process command-line arguments -------------#
+process_args() {
+    case "$1" in
+        -h|--help)
+            show_help
+            ;;
+        -d|--disable-ipv6)
+            disable_ipv6
+            ;;
+        -r|--reenable-ipv6)
+            reenable_ipv6
+            ;;
+        -s|--check-status)
+            check_ipv6_status
+            ;;
+        -C|--create-service)
+            check_and_create_systemd_service
+            ;;
+        -R|--remove-service)
+            remove_systemd_service
+            ;;
+        -S|--check-systemd)
+            check_systemd
+            ;;
+        -H|--harden-system)
+            harden_system
+            ;;
+        -b|--cleanup-backups)
+            cleanup_backups
+            ;;
+        -a|--about)
+            about
+            ;;
+        *)
+            echo -e "${RED}❌  Invalid option. Use --help for available options.${RESET}"
+            ;;
+    esac
+}
+
+#------------- Main Program -------------#
+main() {
+    if [ $# -eq 0 ]; then
+        echo -e "${RED}❌  No arguments provided. Use --help for available options.${RESET}"
+        exit 1
+    fi
+
+    for arg in "$@"; do
+        process_args "$arg"
     done
 }
 
-main_menu
+main "$@"
