@@ -232,6 +232,37 @@ MIT License — use it freely in personal or commercial projects. Attribution ap
 | Version:          | 1.3                                               |
 | Repo:             | https://github.com/DouglasFreshHabian/IPv6Shield  |
 
+## 🐟 Beta Version: v1.3-beta
+<details>
+
+<summary>🖱 Click Here To Expand</summary>
+
+
+I have introduced a beta version for testing. The beta version has a completely different menu format. Test it out and tell me what you thinK?
+
+## 💡 Accessing the Beta Version
+
+To get the latest features and test the Beta version of IPv6Shield:
+
+1. Clone the repository:
+   ```bash
+      git clone https://github.com/DouglasFreshHabian/IPv6Shield
+      cd IPv6Shield
+   ```
+2. Switch to the `Beta` Branch:
+   ```bash
+      git checkout Beta
+   ```
+3. Pull the latest updates
+   ```bash
+      git pull origin Beta
+   ```
+4. Run the Beta version of `ipv6shield`
+   ```
+      ./ipv6shield
+   ```
+</details>
+
 ## 💬 Feedback & Contributions
 
 Got ideas, bug reports, or improvements?  
@@ -269,3 +300,10 @@ For more structured feedback, please use the appropriate templates when opening 
 |  _|| | |  __/\__ \ | | | |  _| (_) | | |  __/ | | \__ \ | (__\__ \
 |_|  |_|  \___||___/_| |_| |_|  \___/|_|  \___|_| |_|___/_|\___|___/
         dfresh@tutanota.com Fresh Forensics, LLC 2025 -->
+
+
+
+
+
+
+<!-- VHJvbGxlZCBieSB0aGUgZ2NqCg== -->
