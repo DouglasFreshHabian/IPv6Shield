@@ -258,9 +258,15 @@ To get the latest features and test the Beta version of IPv6Shield:
       git pull origin Beta
    ```
 4. Run the Beta version of `ipv6shield`
-   ```
+   ```bash
       ./ipv6shield
    ```
+5. Pull up the new help menu:
+   ```bash
+      ./ipv6shield.sh --help
+   ```
+![help menu](https://github.com/DouglasFreshHabian/IPv6Shield/blob/main/Assets/beta-help-menu.png)
+
 </details>
 
 ## 💬 Feedback & Contributions
